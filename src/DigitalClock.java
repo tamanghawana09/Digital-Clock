@@ -1,56 +1,42 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class DigitalClock extends JFrame implements ItemListener {
-    static DigitalClock dc =  new DigitalClock();
-    Container container = getContentPane();
-
-    static JComboBox jcomboBox;
-    static JLabel time;
-    public DigitalClock(){
-
-        int x = 500;
-        int y = 500;
-        setTitle("Digital Clock");
-        setSize(1000,650);
-        setLocation(300,100);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        Container container = getContentPane();
-        String s[] = {"Light Mode","Dark Mode"};
-        jcomboBox = new JComboBox(s);
-        jcomboBox.setBounds(850,10,100,20);
-        jcomboBox.addItemListener(dc);
-        container.add(jcomboBox);
-
-        time= new JLabel();
-        time.setText("00:00:00");
-        container.add(time);
-
-        setVisible(true);
+public class DigitalClock {
+    static JFrame frame = new JFrame("Digital Clock");
+    static Container container = new Container();
+    static JLabel digit = new JLabel("",JLabel.CENTER);
+    static Font clockFont = new Font("Tahoma",Font.BOLD,140);
+    static Color foregroundColor= new Color(23,244,203);
+    static Color backgroundColor = new Color(9,27,49);
+    private void updateTime(){
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        digit.setFont(clockFont);
+        digit.setBounds(0,0,700,300);
+        digit.setForeground(foregroundColor);
+        digit.setText(sdf.format(now));
+        frame.add(digit);
     }
 
-    public static void main(String[] args){
-        SwingUtilities.invokeLater(() -> {
-            new DigitalClock();
-        });
+    public static void main(String[] args) {
+        DigitalClock dc = new DigitalClock();
 
-    }
+        frame.getContentPane().setBackground(backgroundColor);
+        frame.setUndecorated(true);
+        frame.setSize(700,300);
+        frame.setLocation(400,200);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setVisible(true);
 
+        dc.updateTime();
+        Timer timer = new Timer(1000, e-> dc.updateTime());
+        timer.start();
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        if(e.getSource() == jcomboBox){
-            if(jcomboBox.getSelectedItem() == "Light Mode")
-            {
-                container.setBackground(Color.WHITE);
-            }else if(jcomboBox.getSelectedItem() == "Dark Mode"){
-                container.setBackground(Color.DARK_GRAY);
-            }else{
-                JOptionPane.showMessageDialog(this,"Choose for different modes","Not Clicked",JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
+        frame.setLayout(null);
+        frame.setVisible(true);
+        container.add(frame);
     }
 }
