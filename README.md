@@ -1,4 +1,4 @@
-### DIGITAL-CLOCK
+# DIGITAL-CLOCK
 The digital clock shows the current time. <br> <i>( Swing modern UI design ) </i>
 
 <hr>
